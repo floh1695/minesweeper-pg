@@ -2,8 +2,6 @@ import _ from 'lodash';
 import stampit from 'stampit';
 
 function createHasDirectionStamp() {
-  // const directionStamps = [];
-
   const directions = [
     'north',
     'northEast',
@@ -15,49 +13,38 @@ function createHasDirectionStamp() {
     'northWest',
   ];
 
-  const directionStamps = _.map(directions, function (direction) {
-    const props = {};
-    props[direction] = null;
+  return _
+    .chain(directions)
+    .map(function (direction) {
+      const propUpper = direction[0].toUpperCase() + direction.slice(1);
+      return { 
+        prop: direction,
+        set: `set${propUpper}`,
+        get: `get${propUpper}`,
+      };
+    })
+    .map(function (propNames) {
+      const props = {};
+      props[propNames.prop] = null;
 
-    const upperDirection = direction[0].toUpperCase() + direction.slice(1);
-    const methods = {};
-    methods[`set${upperDirection}`] = function (itemAt) {
-      this[direction] = itemAt;
-      return this;
-    };
-    methods[`get${upperDirection}`] = function () {
-      return this[direction];
-    };
+      const methods = {};
+      methods[propNames.set] = function (itemAt) {
+        this[propNames.prop] = itemAt;
+        return this;
+      };
+      methods[propNames.get] = function () {
+        return this[propNames.prop];
+      };
 
-    const directionStamp = stampit()
-      .props(props)
-      .methods(methods);
-
-    return directionStamp;
-  });
-
-  // _.each(directions, function (direction) {
-  //   const props = {};
-  //   props[direction] = null;
-
-  //   const upperDirection = direction[0].toUpperCase() + direction.slice(1);
-  //   const methods = {};
-  //   methods[`set${upperDirection}`] = function (itemAt) {
-  //     this[direction] = itemAt;
-  //     return this;
-  //   };
-  //   methods[`get${upperDirection}`] = function () {
-  //     return this[direction];
-  //   };
-
-  //   const directionStamp = stampit()
-  //     .props(props)
-  //     .methods(methods);
-
-  //   directionStamps.push(directionStamp);
-  // });
-
-  return directionStamps.reduce((fullStamp, nextStamp) => fullStamp.compose(nextStamp));
+      return { props, methods };
+    })
+    .map(function (descriptor) {
+      return stampit.compose(descriptor);
+    })
+    .reduce(function (fullStamp, nextStamp) {
+      return fullStamp.compose(nextStamp);
+    })
+    .value();
 }
 
 export default createHasDirectionStamp();
