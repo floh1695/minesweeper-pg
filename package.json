@@ -1,0 +1,15 @@
+{
+  "name": "minesweeper",
+  "version": "1.0.0",
+  "description": "a minesweeper game",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cbayley95@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "stampit": "^4.1.1"
+  }
+}
