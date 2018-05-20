@@ -1,6 +1,5 @@
-'use strict';
-
-const stampit = require('stampit');
+import _ from 'lodash';
+import stampit from 'stampit';
 
 function createHasDirectionStamp() {
   const directionStamps = [];
@@ -13,20 +12,20 @@ function createHasDirectionStamp() {
     'south',
     'southWest',
     'west',
-    'northWest'
+    'northWest',
   ];
 
-  directions.forEach(direction => {
+  directions.forEach((direction) => {
     const props = {};
     props[direction] = null;
 
     const upperDirection = direction[0].toUpperCase() + direction.slice(1);
     const methods = {};
-    methods[`set${upperDirection}`] = function (itemAt) {
+    methods[`set${upperDirection}`] = function setter(itemAt) {
       this[direction] = itemAt;
       return this;
     };
-    methods[`get${upperDirection}`] = function () {
+    methods[`get${upperDirection}`] = function getter() {
       return this[direction];
     };
 
@@ -40,6 +39,4 @@ function createHasDirectionStamp() {
   return directionStamps.reduce((fullStamp, nextStamp) => fullStamp.compose(nextStamp));
 }
 
-const HasDirection = createHasDirectionStamp();
-
-module.exports = HasDirection;
+export default createHasDirectionStamp();
