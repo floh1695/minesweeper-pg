@@ -1,6 +1,15 @@
 import _ from 'lodash';
+import fp from 'lodash/fp';
+
+import stampit from 'stampit';
 
 import createPropStamp from './createPropStamp';
+
+const log = _.curryRight(
+  (data, message) => {
+    console.log(message, ': ', data);
+    return data;
+  });
 
 function createHasDirectionStamp() {
   const directions = [
@@ -13,6 +22,13 @@ function createHasDirectionStamp() {
     'west',
     'northWest',
   ];
+
+  return fp.flow(
+    fp.map(createPropStamp),
+    log('map'),
+    fp.reduce((fullStamp, nextStamp) => fullStamp.compose(nextStamp))(stampit.compose()),
+    log('reduce')
+  );
 
   return _
     .chain(directions)

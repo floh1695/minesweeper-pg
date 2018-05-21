@@ -1,11 +1,8 @@
 import HasDirection from './stamps/HasDirection.mjs';
 
-import createPropStamp from './stamps/createPropStamp';
+// import createPropStamp from './stamps/createPropStamp';
 
-const direction = HasDirection()
-  .setNorth('Ocala')
-  .setWest('The ocean');
-console.log(direction);
+console.log(HasDirection());
 
-const HasApple = createPropStamp('apple');
-console.log(HasApple().setApple(123));
+// const HasApple = createPropStamp('apple');
+// console.log(HasApple().setApple(123));
